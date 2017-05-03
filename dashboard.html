@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>Dashboard</title>
+</head>
+<body>
+<div id="employees-table">
+    <div class="container">
+        <h4 style="text-decoration: underline">Dinamically display the list of employees:</h4>
+        <table class="table">
+            <thead>
+            <tr>
+                <td><strong>Employee</strong></td>
+                <td><strong>Hire date</strong></td>
+                <td><strong>Salary</strong></td>
+                <td><strong>Actions</strong></td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="employee in employees">
+                <td> {{ employee.name }}</td>
+                <td> {{ employee.hireDate }}</td>
+                <td> {{ employee.salary }}</td>
+                <td><a @click="removeRow(employee)">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="customer-table">
+    <div class="container">
+        <h4 style="text-decoration: underline">Dinamically display the list of customers:</h4>
+
+        <div class="title title-customer">Customer</div>
+        <div class="title title-contract">Contract No</div>
+        <div class="title title-actions">Actions</div>
+        <form action="">
+            <input class="form-control" id="customer">
+            <input class="form-control" id="contract">
+            <input @click="addCustomer()" type="button" value="add"/>
+        </form>
+
+        <table class="table">
+            <tr v-if="customer" v-for="customer in customers">
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.contract }}</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
+<script>
+    var employee = new Vue({
+        el: "#employees-table",
+        data: {
+            employees: [
+                {name: "Jhon Doe", hireDate: "10-02-2015", salary: '$1000'},
+                {name: "Mary Jane", hireDate: "01-11-2013", salary: '$850'},
+                {name: "Michael Stuart", hireDate: "23-07-2012", salary: '$1450'}
+            ]
+        },
+        methods: {
+            removeRow: function (key) {
+                if (this.employees.length > 1) {
+                    this.employees.splice(key, 1);
+                }
+            }
+        }
+    });
+    var customer = new Vue({
+        el: "#customer-table",
+        data: {
+            customers: [
+                {name: "Martin Black", contract: "123456789"},
+                {name: "Hannah Travis", contract: "654876123"},
+                {name: "Sam Tracy", contract: "548751542"}
+            ]
+        },
+        methods: {
+            addCustomer: function () {
+               var $customer = $('#customer');
+               var $contract = $('#contract');
+                if( $customer.val() != '' &&  $contract.val() != ''){
+                    this.customers.push({name: $customer.val(), contract: $contract.val()});
+                    $customer.val('');
+                    $contract.val('');
+                }
+
+            }}
+    });
+</script>
+<style>
+    #customer-table .table{
+        width: 540px;
+    }
+    .container{
+        width: 60%;
+    }
+    .title{
+        float: left;
+        margin-right: 230px;
+        font-weight: bold
+    }
+    h4{
+        color: darkblue;
+    }
+    input.form-control{
+        width: 190px;
+        display: inline-block;
+    }
+    input#customer{
+        margin-right: 100px;
+    }
+    input#contract{
+        margin-right: 120px
+    }
+</style>
+</body>
+</html>
